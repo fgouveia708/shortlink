@@ -1,0 +1,40 @@
+version: "3.1"
+
+services:
+  shortlink-db:
+    image: postgres:14
+    container_name: shortlink-local
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: 'numsey*Password!'
+    ports:
+      - '5434:5432'
+    volumes:
+      - '.docker_volumes/postgres/mod_asset_db:/var/lib/postgresql/data'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-local
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin@admin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'admin'
+    ports:
+      - '16543:80'
+    volumes:
+      - '.docker_volumes/pgadmin-data:/var/lib/pgadmin'
+    depends_on:
+      - shortlink-db
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack-local
+    environment: 
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=sqs
+      - DATA_DIR=/tmp/localstack/data
+    ports: 
+      - '4566-4583:4566-4583'
+    volumes: 
+      - '.docker_volumes\localstackdata:/tmp/localstack'
