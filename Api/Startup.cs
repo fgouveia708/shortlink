@@ -1,15 +1,23 @@
+using Amazon.SQS;
+using Api.Common;
+using Application.Contracts;
+using Application.Services;
+using Application.Validators;
+using Application.ViewModels;
+using Data;
+using Domain.Contracts;
+using Domain.Messages;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Queue;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api
 {
@@ -25,7 +33,40 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+
+            services.AddDocumentationApi();
+
+        
+
+
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add(typeof(ValidatorActionFilter));
+            }).AddFluentValidation();
+
+            services.AddTransient<IValidator<CreateShortlinkViewModelRequest>, CreateShortlinkViewModelRequestValidator>();
+
+
+            AmazonSQSConfig clientConfig = new AmazonSQSConfig();
+            clientConfig.ServiceURL = Configuration.GetConnectionString("SqsConnection");
+            AmazonSQSClient awsClient = new AmazonSQSClient(
+                Configuration.GetConnectionString("AwsAccessKeyId"),
+                Configuration.GetConnectionString("AwsSecretAccessKey"),
+                clientConfig
+            );
+
+
+            services.AddSingleton<IAmazonSQS>(awsClient);
+            services.AddScoped<IBaseQueue<ThirdPartyIntegration>, BaseQueue<ThirdPartyIntegration>>();
+
+            services.AddEntityFrameworkNpgsql().AddDbContext<ShortlinkContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ShortlinkDB")));
+
+            services.AddScoped<IShortlinkRepository, ShortlinkRepository>();
+            services.AddHttpClient<IShortlinkService, ShortlinkService>();
+            services.AddScoped<IThirdPartyIntegrationQueue, ThirdPartyIntegrationQueue>();
+
+            services.AddControllers().AddNewtonsoftJson();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +75,7 @@ namespace Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDocumentationApi();
             }
 
             app.UseHttpsRedirection();
