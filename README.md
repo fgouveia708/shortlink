@@ -39,3 +39,11 @@ AWS_SECRET_ACCESS_KEY="test"
 AWS_REGION="us-east-1"
 OUTPUT="json"
 ```
+
+### Set up the Amazon SQS
+
+##### Create queue _third-party-queue_
+
+```bash
+aws sqs create-queue --queue-name third-party-queue --endpoint-url=http://localhost:4566
+```
