@@ -47,3 +47,7 @@ OUTPUT="json"
 ```bash
 aws sqs create-queue --queue-name third-party-queue --endpoint-url=http://localhost:4566
 ```
+
+## Entity Relationship Diagram
+
+![alt text](https://github.com/fgouveia708/shortlink/blob/main/Api/Contents/erd.png?raw=true)
