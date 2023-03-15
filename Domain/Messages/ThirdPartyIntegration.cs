@@ -9,8 +9,5 @@ namespace Domain.Messages
 
         [JsonProperty("short_url")]
         public string ShortUrl { get; set; }
-
-        [JsonProperty("hint")]
-        public int Hint { get; set; }
     }
 }

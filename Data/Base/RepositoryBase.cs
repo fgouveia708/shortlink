@@ -3,6 +3,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Data.Base
 {
@@ -22,6 +23,11 @@ namespace Data.Base
 
         public virtual void Create(T entity)
         {
+            var now = DateTime.Now;
+
+            entity.CreatedAt = now;
+            entity.UpdatedAt = now;
+
             Set.Add(entity);
 
             this.Commit();
@@ -30,10 +36,25 @@ namespace Data.Base
         public virtual void Delete(Guid id)
         {
             T entity = Set.FirstOrDefault(s => s.Id == id);
+            entity.Deleted = true;
 
-            Set.Remove(entity);
+            this.Update(entity);
+        }
 
+        public virtual void Update(T entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
             this.Commit();
+        }
+
+        public IQueryable<T> FindAll()
+        {
+            return Set.AsNoTracking();
+        }
+
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        {
+           return Set.Where(expression).AsNoTracking();
         }
 
         protected DbSet<T> Set

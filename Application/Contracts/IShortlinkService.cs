@@ -4,6 +4,7 @@ namespace Application.Contracts
 {
     public interface IShortlinkService
     {
-        CreateViewModelResponse Create(CreateShortlinkViewModelRequest model);
+        void Create(CreateShortlinkViewModelRequest model);
+        ShorlinkViewModelResponse Get(GetShorlinkViewModelRequest model);
     }
 }

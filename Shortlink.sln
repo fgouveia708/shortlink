@@ -23,11 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - Queue", "4.2 - Queue"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{F70AE526-8210-4D4C-B6BD-08E27EF86D51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queue", "Queue\Queue.csproj", "{F0CAAD45-E58D-41F2-BE1B-4471AB2A28C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Queue", "Queue\Queue.csproj", "{F0CAAD45-E58D-41F2-BE1B-4471AB2A28C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{9FC965B3-B0A9-401D-810D-B967471D583D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{9FC965B3-B0A9-401D-810D-B967471D583D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{26955094-EEA2-4D95-A9A2-668CBBE07710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{26955094-EEA2-4D95-A9A2-668CBBE07710}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,6 @@
-﻿using Domain.Entities;
-using System;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Domain.Contracts
 {
@@ -7,5 +8,8 @@ namespace Domain.Contracts
     {
         void Create(T entity);
         void Delete(Guid id);
+        void Update(T entity);
+        IQueryable<T> FindAll();
+        IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
     }
 }

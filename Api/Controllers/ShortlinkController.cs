@@ -18,7 +18,11 @@ namespace Api.Controllers
         [HttpGet]
         public IActionResult Get(string shortlink)
         {
-            return Ok();
+            var model = _shortlinkService.Get(new GetShorlinkViewModelRequest() { ShortUrl = shortlink });
+            if (model == null)
+                return NotFound();
+
+            return Ok(model);
         }
 
         [HttpPost]

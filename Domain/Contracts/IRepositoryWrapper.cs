@@ -3,6 +3,5 @@
     public interface IRepositoryWrapper
     {
         IShortlinkRepository Shortlink { get; }
-        void Save();
     }
 }
