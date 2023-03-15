@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Domain.Contracts
+﻿namespace Domain.Contracts
 {
     public interface IBaseQueue<T> where T : class
     {
-        Task SendMessageAsync(T message, string queueUrl);
+        void SendMessage(T message, string queueName);
     }
 }

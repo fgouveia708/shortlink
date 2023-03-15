@@ -28,15 +28,14 @@ services:
     depends_on:
       - shortlink-db
 
-  localstack:
-    image: localstack/localstack:1.0.4
-    container_name: localstack-local
-    environment: 
-      - AWS_DEFAULT_REGION=us-east-1
-      - EDGE_PORT=4566
-      - SERVICES=sqs
-      - DATA_DIR=/tmp/localstack/data
-    ports: 
-      - '4566-4583:4566-4583'
-    volumes: 
-      - '.docker_volumes\localstackdata:/tmp/localstack'
+  rabbitmq3:
+    container_name: "rabbitmq"
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+     # AMQP protocol port
+     - '5672:5672'
+     # HTTP management UI
+     - '15672:15672'

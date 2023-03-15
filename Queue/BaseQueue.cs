@@ -1,32 +1,43 @@
-﻿using Amazon.SQS;
-using Amazon.SQS.Model;
-using Domain.Contracts;
+﻿using Domain.Contracts;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using System;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace Queue
 {
     public class BaseQueue<T> : IBaseQueue<T> where T : class
     {
-        private readonly IAmazonSQS _client;
 
-        public BaseQueue(IAmazonSQS client)
+        public void SendMessage(T message, string queueName)
         {
-            this._client = client;
-        }
-
-        public async Task SendMessageAsync(T message, string queueUrl)
-        {
-            var request = new SendMessageRequest
-            {
-                QueueUrl = queueUrl,
-                MessageBody = JsonConvert.SerializeObject(message)
-            };
-
             try
             {
-                var response = await _client.SendMessageAsync(request);
+                var factory = new ConnectionFactory()
+                {
+                    HostName = "localhost",
+                    Port = 5672,
+                    UserName = "admin",
+                    Password = "admin"
+                };
+
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(queue: queueName,
+                                         durable: false,
+                                         exclusive: false,
+                                         autoDelete: false,
+                                         arguments: null);
+
+
+                    var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+
+                    channel.BasicPublish(exchange: "",
+                                         routingKey: queueName,
+                                         basicProperties: null,
+                                         body: body);
+                }
             }
             catch (Exception e)
             {

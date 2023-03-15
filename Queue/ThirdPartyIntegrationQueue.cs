@@ -1,7 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Messages;
 using System;
-using System.Threading.Tasks;
 
 namespace Queue
 {
@@ -9,11 +8,11 @@ namespace Queue
     {
         private readonly IBaseQueue<ThirdPartyIntegration> _context;
 
-        public string QueueUrl
+        public string QueueName
         {
             get
             {
-                return string.Concat(Environment.GetEnvironmentVariable("SqsQueueUrl"), Environment.GetEnvironmentVariable("SqsThirdPartyQueue"));
+                return Environment.GetEnvironmentVariable("SqsThirdPartyQueue");
             }
         }
         public ThirdPartyIntegrationQueue(IBaseQueue<ThirdPartyIntegration> context)
@@ -21,9 +20,9 @@ namespace Queue
             _context = context;
         }
 
-        public async Task SendMessageAsync(ThirdPartyIntegration message)
+        public void SendMessageAsync(ThirdPartyIntegration message)
         {
-            await _context.SendMessageAsync(message, this.QueueUrl);
+            _context.SendMessage(message, this.QueueName);
         }
     }
 }
