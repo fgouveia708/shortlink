@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Data.Base;
+using Domain.Contracts;
+using Domain.Entities;
 
 namespace Data
 {
-    public class ShortlinkRepository
+    public class ShortlinkRepository : RepositoryBase<Shortlink>, IShortlinkRepository
     {
+        public ShortlinkRepository(ShortlinkContext context) : base(context)
+        {
+        }
     }
 }

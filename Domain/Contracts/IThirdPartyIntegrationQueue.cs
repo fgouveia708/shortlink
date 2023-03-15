@@ -2,8 +2,8 @@
 
 namespace Domain.Contracts
 {
-    public interface IThirdPartyIntegrationQueue
+    public interface IThirdPartyIntegrationQueue 
     {
-        void SendMessageAsync(ThirdPartyIntegration message);
+        void SendMessage(ThirdPartyIntegration message);
     }
 }

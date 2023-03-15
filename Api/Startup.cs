@@ -4,6 +4,8 @@ using Application.Services;
 using Application.Validators;
 using Application.ViewModels;
 using Data;
+using Data.Base;
+using Domain;
 using Domain.Contracts;
 using Domain.Messages;
 using FluentValidation;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Queue;
+using Queue.Base;
 
 namespace Api
 {
@@ -33,21 +36,22 @@ namespace Api
 
             services.AddDocumentationApi();
 
+            services.Configure<Configurations>(Configuration.GetSection("Configurations"));
+
             services.AddMvc(opt =>
             {
                 opt.Filters.Add(typeof(ValidatorActionFilter));
             }).AddFluentValidation();
 
+                      
             services.AddTransient<IValidator<CreateShortlinkViewModelRequest>, CreateShortlinkViewModelRequestValidator>();
-
-
 
             services.AddScoped<IBaseQueue<ThirdPartyIntegration>, BaseQueue<ThirdPartyIntegration>>();
 
             services.AddEntityFrameworkNpgsql().AddDbContext<ShortlinkContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ShortlinkDB")));
 
-            services.AddScoped<IShortlinkRepository, ShortlinkRepository>();
-            services.AddHttpClient<IShortlinkService, ShortlinkService>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IShortlinkService, ShortlinkService>();
             services.AddScoped<IThirdPartyIntegrationQueue, ThirdPartyIntegrationQueue>();
 
             services.AddControllers().AddNewtonsoftJson();

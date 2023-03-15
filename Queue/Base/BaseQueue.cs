@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 using System;
 using System.Text;
 
-namespace Queue
+namespace Queue.Base
 {
     public class BaseQueue<T> : IBaseQueue<T> where T : class
     {

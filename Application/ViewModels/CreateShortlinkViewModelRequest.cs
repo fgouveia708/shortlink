@@ -7,7 +7,5 @@ namespace Application.ViewModels
         [JsonProperty("url")]
         public string Url { get; set; }
 
-        [JsonProperty("short_url")]
-        public string ShortUrl { get; set; }
     }
 }
