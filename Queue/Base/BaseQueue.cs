@@ -1,4 +1,6 @@
-﻿using Domain.Contracts;
+﻿using Domain;
+using Domain.Contracts;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
@@ -8,17 +10,22 @@ namespace Queue.Base
 {
     public class BaseQueue<T> : IBaseQueue<T> where T : class
     {
+        private readonly Configurations _configuration;
 
+        public BaseQueue(IOptions<Configurations> configuration)
+        {
+            _configuration = configuration.Value;
+        }
         public void SendMessage(T message, string queueName)
         {
             try
             {
                 var factory = new ConnectionFactory()
                 {
-                    HostName = "localhost",
-                    Port = 5672,
-                    UserName = "admin",
-                    Password = "admin"
+                    HostName = _configuration.RabbitMqServer,
+                    Port = _configuration.RabbitMqPort,
+                    UserName = _configuration.RabbitMqUser,
+                    Password = _configuration.RabbitMqPassword
                 };
 
                 using (var connection = factory.CreateConnection())
