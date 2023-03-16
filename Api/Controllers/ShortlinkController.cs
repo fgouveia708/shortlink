@@ -29,8 +29,7 @@ namespace Api.Controllers
         [HttpPost]
         public IActionResult Create(CreateShortlinkViewModelRequest model)
         {
-            _shortlinkService.Create(model);
-            return Ok();
+            return Ok(_shortlinkService.Create(model));
         }
     }
 }

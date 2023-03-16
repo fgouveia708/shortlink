@@ -58,7 +58,10 @@ namespace Data.Base
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return Set.Where(expression).AsNoTracking();
+            var query = Set.Where(expression);
+            query = query.Where(w => !w.Deleted);
+
+            return query.AsNoTracking();
         }
 
         protected DbSet<T> Set
