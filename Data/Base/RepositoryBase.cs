@@ -25,6 +25,7 @@ namespace Data.Base
         {
             var now = DateTime.Now;
 
+            entity.Id = Guid.NewGuid();
             entity.CreatedAt = now;
             entity.UpdatedAt = now;
 

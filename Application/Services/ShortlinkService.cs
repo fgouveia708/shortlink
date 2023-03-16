@@ -33,8 +33,7 @@ namespace Application.Services
             _repository.Shortlink.Create(new Domain.Entities.Shortlink()
             {
                 Url = model.Url,
-                ShortUrl = shortUrl,
-                Hint = 1
+                ShortUrl = shortUrl
             });
 
             _thirdPartyIntegrationQueue.SendMessage(new ThirdPartyIntegration()

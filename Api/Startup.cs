@@ -43,12 +43,12 @@ namespace Api
                 opt.Filters.Add(typeof(ValidatorActionFilter));
             }).AddFluentValidation();
 
-                      
+
             services.AddTransient<IValidator<CreateShortlinkViewModelRequest>, CreateShortlinkViewModelRequestValidator>();
 
             services.AddScoped<IBaseQueue<ThirdPartyIntegration>, BaseQueue<ThirdPartyIntegration>>();
 
-            services.AddEntityFrameworkNpgsql().AddDbContext<ShortlinkContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ShortlinkDB")));
+            services.AddDbContext<ShortlinkContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ShortlinkDB")));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IShortlinkService, ShortlinkService>();
@@ -77,6 +77,12 @@ namespace Api
             {
                 endpoints.MapControllers();
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ShortlinkContext>();
+                context.Database.Migrate();
+            }
         }
     }
 }
