@@ -54,6 +54,16 @@ USER="admin@admin.com"
 PASSWORD="admin"
 ```
 
+### Postgres
+
+
+Credentials to connection DB:
+
+```bash
+USER="admin"
+PASSWORD="numsey*Password!"
+```
+
 ## Entity Relationship Diagram
 
 ![alt text](https://github.com/fgouveia708/shortlink/blob/main/Api/Contents/erd.png?raw=true)
