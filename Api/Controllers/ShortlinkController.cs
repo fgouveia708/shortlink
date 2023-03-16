@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Api.Controllers
 {
@@ -16,7 +17,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string shortlink)
+        public IActionResult Get([FromQuery][Required] string shortlink)
         {
             var model = _shortlinkService.Get(new GetShorlinkViewModelRequest() { ShortUrl = shortlink });
             if (model == null)
