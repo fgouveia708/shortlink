@@ -6,7 +6,7 @@ namespace Domain.Contracts
 {
     public interface IRepositoryBase<T>
     {
-        void Create(T entity);
+        T Create(T entity);
         void Delete(Guid id);
         void Update(T entity);
         IQueryable<T> FindAll();

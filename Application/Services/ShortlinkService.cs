@@ -19,7 +19,7 @@ namespace Application.Services
             _thirdPartyIntegrationQueue = thirdPartyIntegrationQueue;
         }
 
-        public void Create(CreateShortlinkViewModelRequest model)
+        public CreateShortlinkViewModelResponse Create(CreateShortlinkViewModelRequest model)
         {
             var existShortUrl = true;
             var shortUrl = string.Empty;
@@ -30,7 +30,7 @@ namespace Application.Services
                 existShortUrl = this.ExistShortUrl(new GetShorlinkViewModelRequest() { ShortUrl = shortUrl });
             }
 
-            _repository.Shortlink.Create(new Domain.Entities.Shortlink()
+            var entity = _repository.Shortlink.Create(new Domain.Entities.Shortlink()
             {
                 Url = model.Url,
                 ShortUrl = shortUrl
@@ -41,6 +41,8 @@ namespace Application.Services
                 Url = model.Url,
                 ShortUrl = shortUrl
             });
+
+            return new CreateShortlinkViewModelResponse() { ShortUrl = entity.ShortUrl };
         }
         public ShorlinkViewModelResponse Get(GetShorlinkViewModelRequest model)
         {

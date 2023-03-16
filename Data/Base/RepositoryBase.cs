@@ -21,7 +21,7 @@ namespace Data.Base
             _context.SaveChanges();
         }
 
-        public virtual void Create(T entity)
+        public virtual T Create(T entity)
         {
             var now = DateTime.Now;
 
@@ -32,6 +32,8 @@ namespace Data.Base
             Set.Add(entity);
 
             this.Commit();
+
+            return entity;
         }
 
         public virtual void Delete(Guid id)
@@ -44,6 +46,7 @@ namespace Data.Base
 
         public virtual void Update(T entity)
         {
+            entity.UpdatedAt = DateTime.Now;
             _context.Entry(entity).State = EntityState.Modified;
             this.Commit();
         }
@@ -55,7 +58,7 @@ namespace Data.Base
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-           return Set.Where(expression).AsNoTracking();
+            return Set.Where(expression).AsNoTracking();
         }
 
         protected DbSet<T> Set
