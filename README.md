@@ -5,7 +5,6 @@
 ### Required
 
 - [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
-- [AWS CLI](https://aws.amazon.com/pt/cli/)
 - [Docker](https://www.docker.com/)
 
 ### Clone project
@@ -17,35 +16,42 @@ Clone the project and run `dotnet restore`
 We use the following services for data storage:
 
 - PostgreSQL
-- SQS
+- RabbitMQ
 
 To provision these resources locally go to default folder and run `docker-compose up -d`
 
-### Set up the aws-cli
+### Run project
 
-> ❗ **Attention**: Install [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+To run `dotnet run`
 
-Run:
+### RabbitMQ
+
+Access your browser:
 
 ```bash
-aws configure --profile default
+http://localhost:15672
 ```
 
 And set values:
 
 ```bash
-AWS_ACCESS_KEY_ID="test"
-AWS_SECRET_ACCESS_KEY="test"
-AWS_REGION="us-east-1"
-OUTPUT="json"
+USER="admin"
+PASSWORD="admin"
 ```
 
-### Set up the Amazon SQS
+### PgAdmin
 
-##### Create queue _third-party-queue_
+Access your browser:
 
 ```bash
-aws sqs create-queue --queue-name third-party-queue --endpoint-url=http://localhost:4566
+http://localhost:16543
+```
+
+And set values:
+
+```bash
+USER="admin@admin.com"
+PASSWORD="admin"
 ```
 
 ## Entity Relationship Diagram
